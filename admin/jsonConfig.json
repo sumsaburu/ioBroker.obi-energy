@@ -1,0 +1,92 @@
+{
+	"i18n": true,
+	"type": "panel",
+	"items": {
+		"notice": {
+			"type": "staticText",
+			"text": "unofficial_api_notice",
+			"newLine": true,
+			"xs": 12
+		},
+		"email": {
+			"type": "text",
+			"label": "email",
+			"help": "email_help",
+			"newLine": true,
+			"xs": 12,
+			"sm": 8,
+			"md": 6
+		},
+		"password": {
+			"type": "password",
+			"label": "password",
+			"help": "password_help",
+			"newLine": true,
+			"xs": 12,
+			"sm": 8,
+			"md": 6
+		},
+		"pollIntervalMinutes": {
+			"type": "number",
+			"label": "poll_interval",
+			"help": "poll_interval_help",
+			"min": 1,
+			"max": 60,
+			"newLine": true,
+			"xs": 12,
+			"sm": 6,
+			"md": 4
+		},
+		"historicalDurationMinutes": {
+			"type": "number",
+			"label": "historical_duration",
+			"help": "historical_duration_help",
+			"min": 5,
+			"max": 120,
+			"newLine": true,
+			"xs": 12,
+			"sm": 6,
+			"md": 4
+		},
+		"liveEnabled": {
+			"type": "checkbox",
+			"label": "live_enabled",
+			"help": "live_enabled_help",
+			"newLine": true,
+			"xs": 12,
+			"sm": 8,
+			"md": 6
+		},
+		"liveUploadIntervalSeconds": {
+			"type": "number",
+			"label": "live_interval",
+			"min": 2,
+			"max": 60,
+			"hidden": "!data.liveEnabled",
+			"newLine": true,
+			"xs": 12,
+			"sm": 6,
+			"md": 4
+		},
+		"normalUploadIntervalSeconds": {
+			"type": "number",
+			"label": "normal_interval",
+			"min": 60,
+			"max": 3600,
+			"hidden": "!data.liveEnabled",
+			"newLine": true,
+			"xs": 12,
+			"sm": 6,
+			"md": 4
+		},
+		"debugApi": {
+			"type": "checkbox",
+			"label": "debug_api",
+			"help": "debug_api_help",
+			"newLine": true,
+			"xs": 12,
+			"sm": 8,
+			"md": 6
+		}
+	}
+}
