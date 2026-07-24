@@ -1,35 +1,50 @@
 {
 	"common": {
 		"name": "obi-energy",
-		"version": "0.1.3",
+		"version": "0.1.4",
 		"news": {
-			"0.1.3": {
-				"en": "Added flexible InfluxDB 1.x/2.x and Grafana examples",
-				"de": "Flexible Beispiele für InfluxDB 1.x/2.x und Grafana ergänzt"
-			},
-			"0.1.2": {
-				"en": "Clarified live mode behavior and power availability",
-				"de": "Verhalten des Live-Modus und Verfügbarkeit der Leistung verständlicher beschrieben"
-			},
-			"0.1.1": {
-				"en": "Improved live message parsing and privacy-safe live diagnostics",
-				"de": "Verbesserte Auswertung von Live-Nachrichten und datenschutzfreundliche Live-Diagnose"
-			},
-			"0.1.0": {
-				"en": "Initial experimental adapter with historical energy data and optional live mode",
-				"de": "Erster experimenteller Adapter mit historischen Energiedaten und optionalem Live-Modus"
+			"0.1.4": {
+				"en": "Prepared the adapter for the official ioBroker repository",
+				"de": "Adapter für die Aufnahme in das offizielle ioBroker-Repository vorbereitet",
+				"ru": "Адаптер подготовлен для официального репозитория ioBroker",
+				"pt": "Adaptador preparado para o repositório oficial do ioBroker",
+				"nl": "Adapter voorbereid voor de officiële ioBroker-repository",
+				"fr": "Adaptateur préparé pour le dépôt officiel ioBroker",
+				"it": "Adattatore preparato per il repository ufficiale ioBroker",
+				"es": "Adaptador preparado para el repositorio oficial de ioBroker",
+				"pl": "Adapter przygotowany do oficjalnego repozytorium ioBroker",
+				"uk": "Адаптер підготовлено для офіційного репозиторію ioBroker",
+				"zh-cn": "已为加入官方 ioBroker 仓库做好准备"
 			}
 		},
 		"titleLang": {
 			"en": "OBI Energy",
-			"de": "OBI Energy"
+			"de": "OBI Energy",
+			"ru": "OBI Energy",
+			"pt": "OBI Energy",
+			"nl": "OBI Energy",
+			"fr": "OBI Energy",
+			"it": "OBI Energy",
+			"es": "OBI Energy",
+			"pl": "OBI Energy",
+			"uk": "OBI Energy",
+			"zh-cn": "OBI Energy"
 		},
 		"desc": {
 			"en": "Connects ioBroker to the unofficial OBI and heyOBI Energy Tracker API",
-			"de": "Verbindet ioBroker mit der inoffiziellen OBI- und heyOBI-Energy-Tracker-API"
+			"de": "Verbindet ioBroker mit der inoffiziellen OBI- und heyOBI-Energy-Tracker-API",
+			"ru": "Подключает ioBroker к неофициальному API OBI и heyOBI Energy Tracker",
+			"pt": "Liga o ioBroker à API não oficial do OBI e heyOBI Energy Tracker",
+			"nl": "Verbindt ioBroker met de onofficiële OBI- en heyOBI Energy Tracker-API",
+			"fr": "Connecte ioBroker à l’API non officielle OBI et heyOBI Energy Tracker",
+			"it": "Collega ioBroker all’API non ufficiale di OBI e heyOBI Energy Tracker",
+			"es": "Conecta ioBroker con la API no oficial de OBI y heyOBI Energy Tracker",
+			"pl": "Łączy ioBroker z nieoficjalnym API OBI i heyOBI Energy Tracker",
+			"uk": "Підключає ioBroker до неофіційного API OBI та heyOBI Energy Tracker",
+			"zh-cn": "将 ioBroker 连接到非官方 OBI 和 heyOBI Energy Tracker API"
 		},
 		"authors": ["Gerke Eckhoff <272596860+sumsaburu@users.noreply.github.com>"],
-		"keywords": ["iobroker", "obi", "energy", "smart meter", "electricity"],
+		"keywords": ["obi", "energy", "smart meter", "electricity"],
 		"licenseInformation": {
 			"type": "free",
 			"license": "MIT"
@@ -49,10 +64,11 @@
 		"adminUI": {
 			"config": "json"
 		},
-		"protectedNative": ["password"],
 		"dependencies": [{ "js-controller": ">=6.0.11" }],
-		"globalDependencies": [{ "admin": ">=7.0.23" }]
+		"globalDependencies": [{ "admin": ">=7.6.20" }]
 	},
+	"protectedNative": ["password"],
+	"encryptedNative": ["password"],
 	"native": {
 		"email": "",
 		"password": "",
@@ -90,10 +106,10 @@
 			"common": {
 				"role": "value.time",
 				"name": { "en": "Last successful update", "de": "Letzte erfolgreiche Aktualisierung" },
-				"type": "string",
+				"type": "number",
 				"read": true,
 				"write": false,
-				"def": ""
+				"def": 0
 			},
 			"native": {}
 		},
@@ -150,10 +166,10 @@
 			"common": {
 				"role": "value.time",
 				"name": { "en": "Consumption measurement time", "de": "Zeitpunkt des Bezugswerts" },
-				"type": "string",
+				"type": "number",
 				"read": true,
 				"write": false,
-				"def": ""
+				"def": 0
 			},
 			"native": {}
 		},
@@ -191,10 +207,10 @@
 			"common": {
 				"role": "value.time",
 				"name": { "en": "Feed-in measurement time", "de": "Zeitpunkt des Einspeisewerts" },
-				"type": "string",
+				"type": "number",
 				"read": true,
 				"write": false,
-				"def": ""
+				"def": 0
 			},
 			"native": {}
 		},
@@ -222,7 +238,7 @@
 			"_id": "device.bridgeId",
 			"type": "state",
 			"common": {
-				"role": "info.id",
+				"role": "text",
 				"name": { "en": "Bridge ID", "de": "Bridge-ID" },
 				"type": "string",
 				"read": true,
@@ -235,7 +251,7 @@
 			"_id": "device.sensorId",
 			"type": "state",
 			"common": {
-				"role": "info.id",
+				"role": "text",
 				"name": { "en": "Sensor ID", "de": "Sensor-ID" },
 				"type": "string",
 				"read": true,
@@ -290,10 +306,10 @@
 			"common": {
 				"role": "value.time",
 				"name": { "en": "Last record received", "de": "Letzter empfangener Messwert" },
-				"type": "string",
+				"type": "number",
 				"read": true,
 				"write": false,
-				"def": ""
+				"def": 0
 			},
 			"native": {}
 		},
@@ -363,10 +379,10 @@
 			"common": {
 				"role": "value.time",
 				"name": { "en": "Last live message", "de": "Letzte Live-Nachricht" },
-				"type": "string",
+				"type": "number",
 				"read": true,
 				"write": false,
-				"def": ""
+				"def": 0
 			},
 			"native": {}
 		},

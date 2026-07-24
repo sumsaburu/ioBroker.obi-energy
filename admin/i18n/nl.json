@@ -1,5 +1,17 @@
 {
-	"obi-energy adapter settings": "Adapterinstellingen voor obi-energy",
-	"option1": "option1",
-	"option2": "optie2"
+	"unofficial_api_notice": "Deze adapter gebruikt een onofficiële OBI/heyOBI-API die op elk moment kan veranderen.",
+	"email": "OBI/heyOBI-e-mailadres",
+	"email_help": "E-mailadres waarmee u zich bij uw OBI/heyOBI-account aanmeldt.",
+	"password": "OBI/heyOBI-wachtwoord",
+	"password_help": "Wordt opgeslagen in de beveiligde adapterconfiguratie en nooit naar logboeken geschreven.",
+	"poll_interval": "Interval voor historische gegevens (minuten)",
+	"poll_interval_help": "OBI werkt historische gegevens normaal ongeveer elke vijf minuten bij.",
+	"historical_duration": "Historisch opvraagvenster (minuten)",
+	"historical_duration_help": "Een venster van 15 minuten houdt rekening met vertraagde metingen.",
+	"live_enabled": "Live-modus inschakelen",
+	"live_enabled_help": "Vraagt actuele stroom, signaalsterkte en batterijniveau op wanneer OBI deze waarden levert. Dit verhoogt de sensoractiviteit.",
+	"live_interval": "Live-sensorinterval (seconden)",
+	"normal_interval": "Normaal sensorinterval na afsluiten (seconden)",
+	"debug_api": "Gedetailleerde API-logging inschakelen",
+	"debug_api_help": "Kan apparaat-ID’s tonen. Anonimiseer logboeken altijd voordat u ze publiceert."
 }

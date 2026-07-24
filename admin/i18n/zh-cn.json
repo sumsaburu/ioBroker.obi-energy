@@ -1,5 +1,17 @@
 {
-	"obi-energy adapter settings": "obi-energy的适配器设置",
-	"option1": "option1",
-	"option2": "选项2"
+	"unofficial_api_notice": "此适配器使用非官方 OBI/heyOBI API，该 API 可能随时更改。",
+	"email": "OBI/heyOBI 电子邮件地址",
+	"email_help": "用于登录 OBI/heyOBI 帐户的电子邮件地址。",
+	"password": "OBI/heyOBI 密码",
+	"password_help": "存储在受保护的适配器配置中，绝不会写入日志。",
+	"poll_interval": "历史数据轮询间隔（分钟）",
+	"poll_interval_help": "OBI 通常大约每五分钟更新一次历史数据。",
+	"historical_duration": "历史查询窗口（分钟）",
+	"historical_duration_help": "15 分钟窗口可容忍延迟的测量数据。",
+	"live_enabled": "启用实时模式",
+	"live_enabled_help": "当 OBI 提供这些值时，请求当前功率、信号强度和电池电量。这会增加传感器活动。",
+	"live_interval": "实时传感器间隔（秒）",
+	"normal_interval": "停止后的正常传感器间隔（秒）",
+	"debug_api": "启用详细 API 日志",
+	"debug_api_help": "可能会暴露设备标识符。发布日志前请务必进行匿名化处理。"
 }
