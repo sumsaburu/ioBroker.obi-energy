@@ -66,7 +66,11 @@ class ObiEnergy extends utils.Adapter {
 			await this.setState('device.connectionStrength', this.device.sensor.connectionStrength, true);
 		}
 		if (this.device.sensor.lastRecordReceivedAt) {
-			await this.setState('device.lastRecordReceived', this.device.sensor.lastRecordReceivedAt, true);
+			await this.setState(
+				'device.lastRecordReceived',
+				Date.parse(this.device.sensor.lastRecordReceivedAt) || Date.now(),
+				true,
+			);
 		}
 	}
 
@@ -98,11 +102,11 @@ class ObiEnergy extends utils.Adapter {
 			if (feedIn) {
 				await this.setState('energy.feedInWh', energyValue(feedIn.value), true);
 				await this.setState('energy.feedInKWh', energyValue(feedIn.value) / 1000, true);
-				await this.setState('energy.feedInTime', feedIn.time, true);
+				await this.setState('energy.feedInTime', Date.parse(feedIn.time) || Date.now(), true);
 			}
 
 			await this.setState('info.connection', true, true);
-			await this.setState('info.lastUpdate', new Date().toISOString(), true);
+			await this.setState('info.lastUpdate', Date.now(), true);
 			await this.setState('info.lastError', '', true);
 		} catch (error) {
 			await this.handleError('Historical data request', error);
@@ -116,7 +120,7 @@ class ObiEnergy extends utils.Adapter {
 		const valueWh = energyValue(value);
 		await this.setState('energy.consumptionWh', valueWh, true);
 		await this.setState('energy.consumptionKWh', valueWh / 1000, true);
-		await this.setState('energy.consumptionTime', time, true);
+		await this.setState('energy.consumptionTime', currentTimestamp, true);
 
 		if (this.previousEnergy) {
 			const averagePower = calculateAveragePower(
@@ -176,7 +180,7 @@ class ObiEnergy extends utils.Adapter {
 					}
 				}
 			}
-			await this.setState('live.lastUpdate', new Date().toISOString(), true);
+			await this.setState('live.lastUpdate', Date.now(), true);
 		} catch (error) {
 			await this.handleError('Live message parsing', error);
 		}

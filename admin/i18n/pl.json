@@ -1,5 +1,17 @@
 {
-	"obi-energy adapter settings": "Ustawienia adaptera dla obi-energy",
-	"option1": "option1",
-	"option2": "opcja 2"
+	"unofficial_api_notice": "Ten adapter korzysta z nieoficjalnego API OBI/heyOBI, które może ulec zmianie w dowolnym momencie.",
+	"email": "Adres e-mail OBI/heyOBI",
+	"email_help": "Adres e-mail używany do logowania na konto OBI/heyOBI.",
+	"password": "Hasło OBI/heyOBI",
+	"password_help": "Przechowywane w chronionej konfiguracji adaptera i nigdy niezapisywane w dziennikach.",
+	"poll_interval": "Interwał pobierania danych historycznych (minuty)",
+	"poll_interval_help": "OBI zwykle aktualizuje dane historyczne mniej więcej co pięć minut.",
+	"historical_duration": "Zakres zapytania historycznego (minuty)",
+	"historical_duration_help": "Zakres 15 minut uwzględnia opóźnione pomiary.",
+	"live_enabled": "Włącz tryb na żywo",
+	"live_enabled_help": "Pobiera bieżącą moc, siłę sygnału i poziom baterii, gdy OBI udostępnia te wartości. Zwiększa to aktywność czujnika.",
+	"live_interval": "Interwał czujnika na żywo (sekundy)",
+	"normal_interval": "Normalny interwał czujnika po zatrzymaniu (sekundy)",
+	"debug_api": "Włącz szczegółowe logowanie API",
+	"debug_api_help": "Może ujawniać identyfikatory urządzeń. Przed publikacją zawsze anonimizuj dzienniki."
 }

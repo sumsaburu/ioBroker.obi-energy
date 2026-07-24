@@ -1,5 +1,17 @@
 {
-	"obi-energy adapter settings": "Paramètres d'adaptateur pour obi-energy",
-	"option1": "option1",
-	"option2": "option2"
+	"unofficial_api_notice": "Cet adaptateur utilise une API OBI/heyOBI non officielle susceptible de changer à tout moment.",
+	"email": "Adresse e-mail OBI/heyOBI",
+	"email_help": "Adresse e-mail utilisée pour se connecter à votre compte OBI/heyOBI.",
+	"password": "Mot de passe OBI/heyOBI",
+	"password_help": "Stocké dans la configuration protégée de l’adaptateur et jamais écrit dans les journaux.",
+	"poll_interval": "Intervalle d’interrogation historique (minutes)",
+	"poll_interval_help": "OBI met normalement à jour les données historiques environ toutes les cinq minutes.",
+	"historical_duration": "Fenêtre de requête historique (minutes)",
+	"historical_duration_help": "Une fenêtre de 15 minutes tolère les mesures retardées.",
+	"live_enabled": "Activer le mode temps réel",
+	"live_enabled_help": "Demande la puissance, la qualité du signal et le niveau de batterie actuels lorsque OBI fournit ces valeurs. Cela augmente l’activité du capteur.",
+	"live_interval": "Intervalle du capteur en temps réel (secondes)",
+	"normal_interval": "Intervalle normal du capteur après l’arrêt (secondes)",
+	"debug_api": "Activer la journalisation détaillée de l’API",
+	"debug_api_help": "Peut révéler des identifiants d’appareil. Anonymisez toujours les journaux avant publication."
 }

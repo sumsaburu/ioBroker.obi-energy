@@ -19,21 +19,12 @@ Experimental ioBroker adapter for the OBI Energy Tracker. It connects to the uno
 - restoration of the normal sensor interval on adapter shutdown
 - protected password field in the ioBroker instance configuration
 
-## Installation for testing
+## Configuration
 
-The adapter has not yet been published to npm or the official ioBroker repository.
-
-1. In ioBroker Admin, open **Adapters**.
-2. Use **Install from custom URL**.
-3. Enter:
-
-   ```text
-   https://github.com/sumsaburu/ioBroker.obi-energy
-   ```
-
-4. Create an instance.
-5. Enter the email address and password of the OBI/heyOBI account.
-6. Leave the experimental live mode disabled for the first test.
+Create an adapter instance and enter the email address and password of the
+OBI/heyOBI account. Leave the experimental live mode disabled for the initial
+setup. After the first successful update, cumulative readings and device
+information are available below the adapter instance.
 
 ## States
 
@@ -148,7 +139,8 @@ difference requires a preceding value.
 
 ## Security and privacy
 
-- The password is stored in ioBroker's protected native configuration.
+- The password is encrypted by ioBroker and hidden in the protected native
+  configuration.
 - Login tokens are held in memory only.
 - Passwords and tokens are never logged.
 - Detailed API logging can contain device identifiers. Anonymise logs before publishing them.
@@ -170,14 +162,33 @@ The adapter was generated with the official `@iobroker/create-adapter` tool.
 
 The API behaviour and constants are based on the MIT-licensed Home Assistant integration [Karo-X/obi_energy](https://github.com/Karo-X/obi_energy) and the earlier experimental script [sumsaburu/iobroker-obi-energy-script](https://github.com/sumsaburu/iobroker-obi-energy-script).
 
+## Changelog
+
+### 0.1.4
+
+- prepared the adapter for review by the official ioBroker repository
+- added complete configuration translations
+- improved responsive configuration layout and metadata
+- updated the test and release workflows
+
+### 0.1.3
+
+- added flexible InfluxDB 1.x/2.x and Grafana examples
+
+### 0.1.2
+
+- clarified live mode behaviour and power availability
+
+### 0.1.1
+
+- improved live message parsing and privacy-safe diagnostics
+
+### 0.1.0
+
+- initial experimental adapter with historical data and optional live mode
+
 ## License
 
 MIT License
 
 Copyright (c) 2026 Gerke Eckhoff and contributors
-
----
-
-## Deutsche Kurzbeschreibung
-
-Dieser experimentelle Adapter bindet den OBI Energy Tracker über die inoffizielle OBI-/heyOBI-API an ioBroker an. Für den ersten Test sollte der Live-Modus deaktiviert bleiben. Nach der Installation werden die Zugangsdaten in der Instanzkonfiguration eingetragen. Bitte niemals Zugangsdaten oder Tokens in Protokollen, Issues oder Repository-Dateien veröffentlichen.

@@ -6,7 +6,11 @@
 			"type": "staticText",
 			"text": "unofficial_api_notice",
 			"newLine": true,
-			"xs": 12
+			"xs": 12,
+			"sm": 12,
+			"md": 12,
+			"lg": 12,
+			"xl": 12
 		},
 		"email": {
 			"type": "text",
@@ -15,7 +19,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 8,
-			"md": 6
+			"md": 6,
+			"lg": 6,
+			"xl": 6
 		},
 		"password": {
 			"type": "password",
@@ -24,7 +30,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 8,
-			"md": 6
+			"md": 6,
+			"lg": 6,
+			"xl": 6
 		},
 		"pollIntervalMinutes": {
 			"type": "number",
@@ -35,7 +43,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 6,
-			"md": 4
+			"md": 4,
+			"lg": 4,
+			"xl": 4
 		},
 		"historicalDurationMinutes": {
 			"type": "number",
@@ -46,7 +56,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 6,
-			"md": 4
+			"md": 4,
+			"lg": 4,
+			"xl": 4
 		},
 		"liveEnabled": {
 			"type": "checkbox",
@@ -55,7 +67,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 8,
-			"md": 6
+			"md": 6,
+			"lg": 6,
+			"xl": 6
 		},
 		"liveUploadIntervalSeconds": {
 			"type": "number",
@@ -66,7 +80,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 6,
-			"md": 4
+			"md": 4,
+			"lg": 4,
+			"xl": 4
 		},
 		"normalUploadIntervalSeconds": {
 			"type": "number",
@@ -77,7 +93,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 6,
-			"md": 4
+			"md": 4,
+			"lg": 4,
+			"xl": 4
 		},
 		"debugApi": {
 			"type": "checkbox",
@@ -86,7 +104,9 @@
 			"newLine": true,
 			"xs": 12,
 			"sm": 8,
-			"md": 6
+			"md": 6,
+			"lg": 6,
+			"xl": 6
 		}
 	}
 }
