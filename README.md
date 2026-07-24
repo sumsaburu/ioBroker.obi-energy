@@ -50,13 +50,64 @@ The adapter creates states below `obi-energy.0`:
 
 ## Live mode
 
-Live mode changes the sensor upload interval and connects to OBI's WebSocket service. Some tested devices provide RSSI and battery but send `power: null`, even while the heyOBI app displays a power value. In that case `live.powerAvailable` remains `false`.
+Live mode changes the sensor upload interval and connects to OBI's WebSocket
+service. The adapter requests instantaneous power, RSSI and battery data. Values
+are written whenever OBI includes them in the live payload.
+
+If OBI returns `power: null`, `live.powerAvailable` is set to `false` and
+`live.powerW` is left unchanged. This indicates that the OBI live endpoint did
+not provide a power value; it is not treated as zero. The heyOBI app may still
+show a value obtained or calculated through a different internal mechanism.
 
 Live mode can increase sensor activity and is disabled by default.
 
 When API debug logging is enabled, the adapter logs only live payload field names
 and value types. Raw WebSocket messages, credentials, tokens and device
 identifiers are never included in this diagnostic output.
+
+`energy.calculatedPowerW` remains available as an average calculated from
+consecutive cumulative meter readings. With the default polling interval it is
+not an instantaneous measurement.
+
+## Hourly consumption with InfluxDB 1.x and Grafana
+
+For hourly energy charts, store the cumulative kWh counters rather than
+`live.powerW` or `energy.calculatedPowerW`.
+
+1. In ioBroker, open **Objects** and enable history for these states in the
+   InfluxDB adapter:
+   - `obi-energy.0.energy.consumptionKWh`
+   - `obi-energy.0.energy.feedInKWh` when feed-in is available
+2. Keep **Store changes only** enabled. The adapter writes cumulative meter
+   readings, so Grafana must calculate the difference between consecutive
+   hourly values.
+3. In Grafana, create a **Bar chart** panel and use this InfluxQL query for
+   hourly consumption:
+
+```sql
+SELECT non_negative_difference(last("value"), 1h) AS "Consumption"
+FROM "obi-energy.0.energy.consumptionKWh"
+WHERE $timeFilter
+GROUP BY time(1h) fill(null)
+```
+
+For hourly feed-in, use:
+
+```sql
+SELECT non_negative_difference(last("value"), 1h) AS "Feed-in"
+FROM "obi-energy.0.energy.feedInKWh"
+WHERE $timeFilter
+GROUP BY time(1h) fill(null)
+```
+
+Set the Grafana unit to **Energy → kilowatt-hour (kWh)**. Depending on the
+InfluxDB adapter configuration, the measurement name may include a configured
+prefix or differ from the full ioBroker state ID. Select the exact measurement
+shown by Grafana's query editor in that case.
+
+`non_negative_difference` prevents a meter reset or counter rollover from
+appearing as a large negative hourly value. Empty hours should remain `null`;
+filling them with zero can hide missing OBI readings.
 
 ## Security and privacy
 
