@@ -1,8 +1,12 @@
 {
 	"common": {
 		"name": "obi-energy",
-		"version": "0.1.0",
+		"version": "0.1.1",
 		"news": {
+			"0.1.1": {
+				"en": "Improved live message parsing and privacy-safe live diagnostics",
+				"de": "Verbesserte Auswertung von Live-Nachrichten und datenschutzfreundliche Live-Diagnose"
+			},
 			"0.1.0": {
 				"en": "Initial experimental adapter with historical energy data and optional live mode",
 				"de": "Erster experimenteller Adapter mit historischen Energiedaten und optionalem Live-Modus"
