@@ -1,0 +1,17 @@
+{
+	"unofficial_api_notice": "This adapter uses an unofficial OBI/heyOBI API that may change at any time.",
+	"email": "OBI/heyOBI email address",
+	"email_help": "Email address used to sign in to your OBI/heyOBI account.",
+	"password": "OBI/heyOBI password",
+	"password_help": "Stored in the protected adapter configuration and never written to logs.",
+	"poll_interval": "Historical polling interval (minutes)",
+	"poll_interval_help": "OBI normally updates historical data about every five minutes.",
+	"historical_duration": "Historical query window (minutes)",
+	"historical_duration_help": "A 15-minute window tolerates delayed measurements.",
+	"live_enabled": "Enable experimental live mode",
+	"live_enabled_help": "Increases sensor activity. Some devices provide RSSI and battery but no power value.",
+	"live_interval": "Live sensor interval (seconds)",
+	"normal_interval": "Normal sensor interval after shutdown (seconds)",
+	"debug_api": "Enable detailed API logging",
+	"debug_api_help": "May expose device identifiers. Never publish logs without anonymising them."
+}

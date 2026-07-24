@@ -1,0 +1,376 @@
+{
+	"common": {
+		"name": "obi-energy",
+		"version": "0.1.0",
+		"news": {
+			"0.1.0": {
+				"en": "Initial experimental adapter with historical energy data and optional live mode",
+				"de": "Erster experimenteller Adapter mit historischen Energiedaten und optionalem Live-Modus"
+			}
+		},
+		"titleLang": {
+			"en": "OBI Energy",
+			"de": "OBI Energy"
+		},
+		"desc": {
+			"en": "Connects ioBroker to the unofficial OBI and heyOBI Energy Tracker API",
+			"de": "Verbindet ioBroker mit der inoffiziellen OBI- und heyOBI-Energy-Tracker-API"
+		},
+		"authors": ["Gerke Eckhoff <272596860+sumsaburu@users.noreply.github.com>"],
+		"keywords": ["iobroker", "obi", "energy", "smart meter", "electricity"],
+		"licenseInformation": {
+			"type": "free",
+			"license": "MIT"
+		},
+		"platform": "Javascript/Node.js",
+		"icon": "obi-energy.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/sumsaburu/ioBroker.obi-energy/main/admin/obi-energy.png",
+		"readme": "https://github.com/sumsaburu/ioBroker.obi-energy/blob/main/README.md",
+		"loglevel": "info",
+		"tier": 3,
+		"mode": "daemon",
+		"type": "energy",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"adminUI": {
+			"config": "json"
+		},
+		"protectedNative": ["password"],
+		"dependencies": [{ "js-controller": ">=6.0.11" }],
+		"globalDependencies": [{ "admin": ">=7.0.23" }]
+	},
+	"native": {
+		"email": "",
+		"password": "",
+		"pollIntervalMinutes": 5,
+		"historicalDurationMinutes": 15,
+		"liveEnabled": false,
+		"liveUploadIntervalSeconds": 2,
+		"normalUploadIntervalSeconds": 300,
+		"debugApi": false
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": { "name": { "en": "Information", "de": "Information" } },
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": { "en": "OBI service connected", "de": "Mit OBI-Dienst verbunden" },
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.lastUpdate",
+			"type": "state",
+			"common": {
+				"role": "value.time",
+				"name": { "en": "Last successful update", "de": "Letzte erfolgreiche Aktualisierung" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.lastError",
+			"type": "state",
+			"common": {
+				"role": "text",
+				"name": { "en": "Last error", "de": "Letzter Fehler" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy",
+			"type": "channel",
+			"common": { "name": { "en": "Energy", "de": "Energie" } },
+			"native": {}
+		},
+		{
+			"_id": "energy.consumptionWh",
+			"type": "state",
+			"common": {
+				"role": "value.energy.consumed",
+				"name": { "en": "Cumulative grid consumption", "de": "Kumulierter Strombezug" },
+				"type": "number",
+				"unit": "Wh",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy.consumptionKWh",
+			"type": "state",
+			"common": {
+				"role": "value.energy.consumed",
+				"name": { "en": "Cumulative grid consumption", "de": "Kumulierter Strombezug" },
+				"type": "number",
+				"unit": "kWh",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy.consumptionTime",
+			"type": "state",
+			"common": {
+				"role": "value.time",
+				"name": { "en": "Consumption measurement time", "de": "Zeitpunkt des Bezugswerts" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy.feedInWh",
+			"type": "state",
+			"common": {
+				"role": "value.energy.produced",
+				"name": { "en": "Cumulative grid feed-in", "de": "Kumulierte Einspeisung" },
+				"type": "number",
+				"unit": "Wh",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy.feedInKWh",
+			"type": "state",
+			"common": {
+				"role": "value.energy.produced",
+				"name": { "en": "Cumulative grid feed-in", "de": "Kumulierte Einspeisung" },
+				"type": "number",
+				"unit": "kWh",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy.feedInTime",
+			"type": "state",
+			"common": {
+				"role": "value.time",
+				"name": { "en": "Feed-in measurement time", "de": "Zeitpunkt des Einspeisewerts" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "energy.calculatedPowerW",
+			"type": "state",
+			"common": {
+				"role": "value.power",
+				"name": { "en": "Calculated average power", "de": "Berechnete Durchschnittsleistung" },
+				"type": "number",
+				"unit": "W",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "device",
+			"type": "channel",
+			"common": { "name": { "en": "Device", "de": "Gerät" } },
+			"native": {}
+		},
+		{
+			"_id": "device.bridgeId",
+			"type": "state",
+			"common": {
+				"role": "info.id",
+				"name": { "en": "Bridge ID", "de": "Bridge-ID" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "device.sensorId",
+			"type": "state",
+			"common": {
+				"role": "info.id",
+				"name": { "en": "Sensor ID", "de": "Sensor-ID" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "device.battery",
+			"type": "state",
+			"common": {
+				"role": "value.battery",
+				"name": { "en": "Sensor battery", "de": "Sensorbatterie" },
+				"type": "number",
+				"unit": "%",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "device.online",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": { "en": "Sensor online", "de": "Sensor online" },
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "device.connectionStrength",
+			"type": "state",
+			"common": {
+				"role": "text",
+				"name": { "en": "Connection strength", "de": "Verbindungsqualität" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "device.lastRecordReceived",
+			"type": "state",
+			"common": {
+				"role": "value.time",
+				"name": { "en": "Last record received", "de": "Letzter empfangener Messwert" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "live",
+			"type": "channel",
+			"common": { "name": { "en": "Experimental live data", "de": "Experimentelle Live-Daten" } },
+			"native": {}
+		},
+		{
+			"_id": "live.connected",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": { "en": "Live WebSocket connected", "de": "Live-WebSocket verbunden" },
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "live.powerW",
+			"type": "state",
+			"common": {
+				"role": "value.power",
+				"name": { "en": "Live power", "de": "Live-Leistung" },
+				"type": "number",
+				"unit": "W",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "live.powerAvailable",
+			"type": "state",
+			"common": {
+				"role": "indicator",
+				"name": { "en": "Live power available", "de": "Live-Leistung verfügbar" },
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		},
+		{
+			"_id": "live.rssi",
+			"type": "state",
+			"common": {
+				"role": "value",
+				"name": { "en": "Signal strength", "de": "Signalstärke" },
+				"type": "number",
+				"unit": "dBm",
+				"read": true,
+				"write": false,
+				"def": 0
+			},
+			"native": {}
+		},
+		{
+			"_id": "live.lastUpdate",
+			"type": "state",
+			"common": {
+				"role": "value.time",
+				"name": { "en": "Last live message", "de": "Letzte Live-Nachricht" },
+				"type": "string",
+				"read": true,
+				"write": false,
+				"def": ""
+			},
+			"native": {}
+		},
+		{
+			"_id": "live.uploadInterval",
+			"type": "state",
+			"common": {
+				"role": "value.interval",
+				"name": { "en": "Sensor upload interval", "de": "Sensorintervall" },
+				"type": "number",
+				"unit": "s",
+				"read": true,
+				"write": false,
+				"def": 300
+			},
+			"native": {}
+		}
+	]
+}
