@@ -69,7 +69,7 @@ identifiers are never included in this diagnostic output.
 consecutive cumulative meter readings. With the default polling interval it is
 not an instantaneous measurement.
 
-## Hourly consumption with InfluxDB 1.x and Grafana
+## Hourly consumption with InfluxDB and Grafana
 
 For hourly energy charts, store the cumulative kWh counters rather than
 `live.powerW` or `energy.calculatedPowerW`.
@@ -81,12 +81,49 @@ For hourly energy charts, store the cumulative kWh counters rather than
 2. Keep **Store changes only** enabled. The adapter writes cumulative meter
    readings, so Grafana must calculate the difference between consecutive
    hourly values.
-3. In Grafana, create a **Bar chart** panel and use this InfluxQL query for
-   hourly consumption:
+
+The exact bucket, measurement, and field names depend on your ioBroker
+InfluxDB adapter configuration. Before copying a query, determine these values
+in InfluxDB's **Data Explorer** or Grafana's **Explore** view:
+
+- `<BUCKET_NAME>`: the bucket selected in your InfluxDB 2.x data source
+- `<CONSUMPTION_MEASUREMENT>`: the measurement containing
+  `obi-energy.0.energy.consumptionKWh`
+- `<FEED_IN_MEASUREMENT>`: the measurement containing
+  `obi-energy.0.energy.feedInKWh`
+- `<FIELD_NAME>`: usually `value`, but this must be verified in your data
+
+The measurement is often the complete ioBroker state ID, but prefixes and
+aliases configured in the InfluxDB adapter can change it.
+
+### InfluxDB 2.x (Flux)
+
+Create a Grafana **Bar chart** panel and replace all placeholders with the
+names from your installation:
+
+```flux
+from(bucket: "<BUCKET_NAME>")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) =>
+    r._measurement == "<CONSUMPTION_MEASUREMENT>" and
+    r._field == "<FIELD_NAME>"
+  )
+  |> aggregateWindow(every: 1h, fn: last, createEmpty: false)
+  |> difference(nonNegative: true)
+  |> yield(name: "Hourly consumption")
+```
+
+For hourly feed-in, use the same query and replace
+`<CONSUMPTION_MEASUREMENT>` with `<FEED_IN_MEASUREMENT>`.
+
+### InfluxDB 1.x (InfluxQL)
+
+Replace the measurement and field placeholders with the names shown by
+Grafana's query editor:
 
 ```sql
-SELECT non_negative_difference(last("value"), 1h) AS "Consumption"
-FROM "obi-energy.0.energy.consumptionKWh"
+SELECT non_negative_difference(last("<FIELD_NAME>"), 1h) AS "Consumption"
+FROM "<CONSUMPTION_MEASUREMENT>"
 WHERE $timeFilter
 GROUP BY time(1h) fill(null)
 ```
@@ -94,20 +131,20 @@ GROUP BY time(1h) fill(null)
 For hourly feed-in, use:
 
 ```sql
-SELECT non_negative_difference(last("value"), 1h) AS "Feed-in"
-FROM "obi-energy.0.energy.feedInKWh"
+SELECT non_negative_difference(last("<FIELD_NAME>"), 1h) AS "Feed-in"
+FROM "<FEED_IN_MEASUREMENT>"
 WHERE $timeFilter
 GROUP BY time(1h) fill(null)
 ```
 
-Set the Grafana unit to **Energy → kilowatt-hour (kWh)**. Depending on the
-InfluxDB adapter configuration, the measurement name may include a configured
-prefix or differ from the full ioBroker state ID. Select the exact measurement
-shown by Grafana's query editor in that case.
+Set the Grafana unit to **Energy → kilowatt-hour (kWh)** and the minimum
+interval to `1h`.
 
-`non_negative_difference` prevents a meter reset or counter rollover from
-appearing as a large negative hourly value. Empty hours should remain `null`;
-filling them with zero can hide missing OBI readings.
+`difference(nonNegative: true)` in Flux and `non_negative_difference` in
+InfluxQL prevent a meter reset or counter rollover from appearing as a large
+negative hourly value. Empty hours should remain `null`; filling them with zero
+can hide missing OBI readings. The first visible hour can be empty because a
+difference requires a preceding value.
 
 ## Security and privacy
 
