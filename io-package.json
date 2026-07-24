@@ -1,8 +1,12 @@
 {
 	"common": {
 		"name": "obi-energy",
-		"version": "0.1.1",
+		"version": "0.1.2",
 		"news": {
+			"0.1.2": {
+				"en": "Clarified live mode behavior and power availability",
+				"de": "Verhalten des Live-Modus und Verfügbarkeit der Leistung verständlicher beschrieben"
+			},
 			"0.1.1": {
 				"en": "Improved live message parsing and privacy-safe live diagnostics",
 				"de": "Verbesserte Auswertung von Live-Nachrichten und datenschutzfreundliche Live-Diagnose"

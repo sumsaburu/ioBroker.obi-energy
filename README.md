@@ -50,13 +50,24 @@ The adapter creates states below `obi-energy.0`:
 
 ## Live mode
 
-Live mode changes the sensor upload interval and connects to OBI's WebSocket service. Some tested devices provide RSSI and battery but send `power: null`, even while the heyOBI app displays a power value. In that case `live.powerAvailable` remains `false`.
+Live mode changes the sensor upload interval and connects to OBI's WebSocket
+service. The adapter requests instantaneous power, RSSI and battery data. Values
+are written whenever OBI includes them in the live payload.
+
+If OBI returns `power: null`, `live.powerAvailable` is set to `false` and
+`live.powerW` is left unchanged. This indicates that the OBI live endpoint did
+not provide a power value; it is not treated as zero. The heyOBI app may still
+show a value obtained or calculated through a different internal mechanism.
 
 Live mode can increase sensor activity and is disabled by default.
 
 When API debug logging is enabled, the adapter logs only live payload field names
 and value types. Raw WebSocket messages, credentials, tokens and device
 identifiers are never included in this diagnostic output.
+
+`energy.calculatedPowerW` remains available as an average calculated from
+consecutive cumulative meter readings. With the default polling interval it is
+not an instantaneous measurement.
 
 ## Security and privacy
 
