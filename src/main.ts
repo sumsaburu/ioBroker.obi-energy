@@ -1,13 +1,8 @@
 import * as utils from '@iobroker/adapter-core';
 import type WebSocket from 'ws';
+import { finiteNumber, livePayloadSignature, parseLiveMessages, type LivePayload } from './lib/live-message';
 import { calculateAveragePower, isoTimestampMinutesAgo, latestMeasurement } from './lib/measurements';
 import { ObiApi, type DiscoveredDevice } from './lib/obi-api';
-
-interface LivePayload {
-	power?: number | null;
-	rssi?: number | null;
-	battery?: number | null;
-}
 
 class ObiEnergy extends utils.Adapter {
 	private api: ObiApi | null = null;
@@ -18,6 +13,7 @@ class ObiEnergy extends utils.Adapter {
 	private stopping = false;
 	private polling = false;
 	private previousEnergy: { value: number; timestamp: number } | null = null;
+	private lastLiveDiagnosticSignature: string | null = null;
 
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({ ...options, name: 'obi-energy' });
@@ -162,19 +158,40 @@ class ObiEnergy extends utils.Adapter {
 
 	private async handleLiveMessage(raw: string): Promise<void> {
 		try {
-			const parsed = JSON.parse(raw) as { data?: LivePayload } & LivePayload;
-			const data = parsed.data ?? parsed;
-			await this.writeOptionalState('live.rssi', data.rssi);
-			await this.writeOptionalState('device.battery', data.battery);
-			if (typeof data.power === 'number' && Number.isFinite(data.power)) {
-				await this.setState('live.powerW', data.power, true);
-				await this.setState('live.powerAvailable', true, true);
-			} else {
-				await this.setState('live.powerAvailable', false, true);
+			const messages = parseLiveMessages(raw);
+			if (messages.length === 0) {
+				if (this.config.debugApi) {
+					this.log.debug('Live WebSocket frame contained no supported OBI live payload');
+				}
+				return;
+			}
+
+			for (const message of messages) {
+				await this.handleLivePayload(message.payload);
+				if (this.config.debugApi) {
+					const signature = livePayloadSignature(message);
+					if (signature !== this.lastLiveDiagnosticSignature) {
+						this.lastLiveDiagnosticSignature = signature;
+						this.log.debug(`Live payload structure: ${signature}`);
+					}
+				}
 			}
 			await this.setState('live.lastUpdate', new Date().toISOString(), true);
 		} catch (error) {
 			await this.handleError('Live message parsing', error);
+		}
+	}
+
+	private async handleLivePayload(data: LivePayload): Promise<void> {
+		await this.writeOptionalState('live.rssi', finiteNumber(data.rssi));
+		await this.writeOptionalState('device.battery', finiteNumber(data.battery));
+
+		const power = finiteNumber(data.power);
+		if (power !== null) {
+			await this.setState('live.powerW', power, true);
+			await this.setState('live.powerAvailable', true, true);
+		} else {
+			await this.setState('live.powerAvailable', false, true);
 		}
 	}
 

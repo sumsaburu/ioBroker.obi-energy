@@ -22,6 +22,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var utils = __toESM(require("@iobroker/adapter-core"));
+var import_live_message = require("./lib/live-message");
 var import_measurements = require("./lib/measurements");
 var import_obi_api = require("./lib/obi-api");
 class ObiEnergy extends utils.Adapter {
@@ -33,6 +34,7 @@ class ObiEnergy extends utils.Adapter {
   stopping = false;
   polling = false;
   previousEnergy = null;
+  lastLiveDiagnosticSignature = null;
   constructor(options = {}) {
     super({ ...options, name: "obi-energy" });
     this.on("ready", this.onReady.bind(this));
@@ -161,21 +163,38 @@ class ObiEnergy extends utils.Adapter {
     });
   }
   async handleLiveMessage(raw) {
-    var _a;
     try {
-      const parsed = JSON.parse(raw);
-      const data = (_a = parsed.data) != null ? _a : parsed;
-      await this.writeOptionalState("live.rssi", data.rssi);
-      await this.writeOptionalState("device.battery", data.battery);
-      if (typeof data.power === "number" && Number.isFinite(data.power)) {
-        await this.setState("live.powerW", data.power, true);
-        await this.setState("live.powerAvailable", true, true);
-      } else {
-        await this.setState("live.powerAvailable", false, true);
+      const messages = (0, import_live_message.parseLiveMessages)(raw);
+      if (messages.length === 0) {
+        if (this.config.debugApi) {
+          this.log.debug("Live WebSocket frame contained no supported OBI live payload");
+        }
+        return;
+      }
+      for (const message of messages) {
+        await this.handleLivePayload(message.payload);
+        if (this.config.debugApi) {
+          const signature = (0, import_live_message.livePayloadSignature)(message);
+          if (signature !== this.lastLiveDiagnosticSignature) {
+            this.lastLiveDiagnosticSignature = signature;
+            this.log.debug(`Live payload structure: ${signature}`);
+          }
+        }
       }
       await this.setState("live.lastUpdate", (/* @__PURE__ */ new Date()).toISOString(), true);
     } catch (error) {
       await this.handleError("Live message parsing", error);
+    }
+  }
+  async handleLivePayload(data) {
+    await this.writeOptionalState("live.rssi", (0, import_live_message.finiteNumber)(data.rssi));
+    await this.writeOptionalState("device.battery", (0, import_live_message.finiteNumber)(data.battery));
+    const power = (0, import_live_message.finiteNumber)(data.power);
+    if (power !== null) {
+      await this.setState("live.powerW", power, true);
+      await this.setState("live.powerAvailable", true, true);
+    } else {
+      await this.setState("live.powerAvailable", false, true);
     }
   }
   scheduleReconnect() {

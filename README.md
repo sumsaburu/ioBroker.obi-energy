@@ -54,6 +54,10 @@ Live mode changes the sensor upload interval and connects to OBI's WebSocket ser
 
 Live mode can increase sensor activity and is disabled by default.
 
+When API debug logging is enabled, the adapter logs only live payload field names
+and value types. Raw WebSocket messages, credentials, tokens and device
+identifiers are never included in this diagnostic output.
+
 ## Security and privacy
 
 - The password is stored in ioBroker's protected native configuration.
