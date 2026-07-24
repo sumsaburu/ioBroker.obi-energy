@@ -1,6 +1,6 @@
 {
   "name": "iobroker.obi-energy",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Connects ioBroker to the unofficial OBI and heyOBI Energy Tracker API",
   "author": {
     "name": "Gerke Eckhoff",

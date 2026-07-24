@@ -1,8 +1,12 @@
 {
 	"common": {
 		"name": "obi-energy",
-		"version": "0.1.2",
+		"version": "0.1.3",
 		"news": {
+			"0.1.3": {
+				"en": "Added flexible InfluxDB 1.x/2.x and Grafana examples",
+				"de": "Flexible Beispiele für InfluxDB 1.x/2.x und Grafana ergänzt"
+			},
 			"0.1.2": {
 				"en": "Clarified live mode behavior and power availability",
 				"de": "Verhalten des Live-Modus und Verfügbarkeit der Leistung verständlicher beschrieben"
